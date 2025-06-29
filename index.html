@@ -3,38 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>זיהוי מקורות ספריא</title>
+    <title>מקורות ספריא</title>
     
-    <!-- Office.js -->
-    <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js" type="text/javascript"></script>
+    <!-- חיבור ל-Office.js -->
+    <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
     
     <style>
-        * {
-            box-sizing: border-box;
-        }
-        
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Arial, sans-serif;
             margin: 0;
             padding: 15px;
-            background: #f5f5f5;
-            font-size: 14px;
+            background: #f5f7fa;
             direction: rtl;
-        }
-        
-        .container {
-            max-width: 100%;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            overflow: hidden;
+            font-size: 14px;
         }
         
         .header {
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             padding: 20px;
             text-align: center;
+            border-radius: 10px;
+            margin-bottom: 20px;
         }
         
         .header h1 {
@@ -43,81 +33,84 @@
             font-weight: 300;
         }
         
-        .content {
-            padding: 20px;
+        .header p {
+            margin: 5px 0 0 0;
+            opacity: 0.9;
+            font-size: 0.9em;
         }
         
         .section {
-            margin-bottom: 20px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 6px;
-            border-right: 3px solid #667eea;
-        }
-        
-        .section h3 {
-            margin-top: 0;
-            color: #2c3e50;
-            font-size: 1.1em;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         
         .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
             width: 100%;
+            padding: 15px;
             margin: 8px 0;
+            font-size: 16px;
+            font-weight: 500;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
             transition: all 0.3s ease;
+            color: white;
         }
         
-        .btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-        }
-        
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
         
         .btn-secondary {
             background: #6c757d;
         }
         
-        .btn-danger {
-            background: #dc3545;
+        .btn-success {
+            background: #28a745;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            transform: none;
+            cursor: not-allowed;
         }
         
         .results {
             margin-top: 15px;
-            max-height: 300px;
-            overflow-y: auto;
+            display: none;
+        }
+        
+        .results.show {
+            display: block;
         }
         
         .source-item {
             background: #e8f5e8;
+            padding: 15px;
             margin: 10px 0;
-            padding: 12px;
-            border-radius: 6px;
-            border-right: 3px solid #28a745;
+            border-radius: 8px;
+            border-right: 4px solid #28a745;
         }
         
         .source-ref {
             font-weight: bold;
             color: #2c3e50;
             margin-bottom: 8px;
+            font-size: 1.1em;
         }
         
         .source-text {
-            font-size: 13px;
             color: #666;
             font-style: italic;
+            font-size: 0.9em;
         }
         
         .loading {
@@ -127,14 +120,13 @@
         }
         
         .spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 2px solid #f3f3f3;
-            border-top: 2px solid #667eea;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
             border-radius: 50%;
+            width: 30px;
+            height: 30px;
             animation: spin 1s linear infinite;
-            margin-left: 10px;
+            margin: 0 auto 10px auto;
         }
         
         @keyframes spin {
@@ -142,399 +134,389 @@
             100% { transform: rotate(360deg); }
         }
         
-        .error {
-            background: #ffe6e6;
-            border-right: 3px solid #dc3545;
-            color: #721c24;
+        .alert {
             padding: 12px;
             border-radius: 6px;
             margin: 10px 0;
-            font-size: 13px;
+            font-size: 0.9em;
         }
         
-        .success {
+        .alert-success {
             background: #d4edda;
-            border-right: 3px solid #28a745;
             color: #155724;
-            padding: 12px;
-            border-radius: 6px;
-            margin: 10px 0;
-            font-size: 13px;
+            border-right: 4px solid #28a745;
         }
         
-        .options {
-            margin: 15px 0;
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border-right: 4px solid #dc3545;
         }
         
-        .checkbox-group {
-            margin: 10px 0;
-        }
-        
-        .checkbox-group input[type="checkbox"] {
-            margin-left: 8px;
-        }
-        
-        .checkbox-group label {
-            font-size: 13px;
-            color: #555;
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border-right: 4px solid #17a2b8;
         }
         
         .stats {
             background: #fff3cd;
-            border-right: 3px solid #ffc107;
-            padding: 10px;
-            border-radius: 6px;
+            border-right: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
             margin: 10px 0;
-            font-size: 13px;
             text-align: center;
+            font-weight: bold;
+        }
+        
+        .help {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 0.85em;
+            color: #666;
+            line-height: 1.4;
+        }
+        
+        .help h4 {
+            margin-top: 0;
+            color: #495057;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🔍 זיהוי מקורות</h1>
-        </div>
+    <div class="header">
+        <h1>🔍 מקורות ספריא</h1>
+        <p>זיהוי אוטומטי של מקורות יהודיים</p>
+    </div>
+    
+    <div class="section">
+        <button class="btn btn-primary" onclick="findSources()" id="findBtn">
+            🔍 חפש מקורות בטקסט נבחר
+        </button>
         
-        <div class="content">
-            <div class="section">
-                <h3>פעולות עיקריות</h3>
-                <button class="btn" onclick="findSourcesInSelection()">🔍 חפש מקורות בטקסט נבחר</button>
-                <button class="btn" onclick="findSourcesInDocument()">📄 חפש מקורות בכל המסמך</button>
-                <button class="btn btn-secondary" onclick="clearHighlights()">🧹 נקה הדגשות</button>
-            </div>
-            
-            <div class="section">
-                <h3>אפשרויות</h3>
-                <div class="options">
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="addFootnotes" checked>
-                        <label for="addFootnotes">הוסף הערות שוליים</label>
-                    </div>
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="highlightSources" checked>
-                        <label for="highlightSources">הדגש מקורות בטקסט</label>
-                    </div>
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="insertBrackets">
-                        <label for="insertBrackets">הוסף מקורות בסוגריים</label>
-                    </div>
-                </div>
-            </div>
-            
-            <div id="results" style="display: none;">
-                <div class="section">
-                    <h3>תוצאות</h3>
-                    <div id="stats"></div>
-                    <div id="sourcesList"></div>
-                </div>
-            </div>
-            
-            <div class="section">
-                <h3>עזרה</h3>
-                <p style="font-size: 13px; color: #666; line-height: 1.4;">
-                    בחרו טקסט עברי ולחצו על "חפש מקורות" כדי לזהות מקורות יהודיים. 
-                    התוסף יחפש ציטוטים, פסוקים והפניות למקורות ויוסיף אותם למסמך.
-                </p>
-            </div>
+        <button class="btn btn-secondary" onclick="clearHighlights()" id="clearBtn">
+            🧹 נקה הדגשות
+        </button>
+        
+        <button class="btn btn-success" onclick="findInDocument()" id="docBtn">
+            📄 חפש בכל המסמך
+        </button>
+    </div>
+    
+    <div id="results" class="results">
+        <div class="section">
+            <div id="message"></div>
+            <div id="sourcesList"></div>
         </div>
+    </div>
+    
+    <div class="help">
+        <h4>📖 איך להשתמש:</h4>
+        <p>1. בחר טקסט עברי במסמך</p>
+        <p>2. לחץ על "חפש מקורות"</p>
+        <p>3. התוסף יחפש ויסמן מקורות אוטומטית</p>
+        <p>4. הערות שוליים יתווספו למקורות שנמצאו</p>
     </div>
 
     <script>
-        // Initialize Office.js
+        // אתחול Office.js
         Office.onReady(function(info) {
-            console.log('Office.js ready, host:', info.host);
+            console.log('Office.js מוכן, זוהה:', info.host);
+            
             if (info.host === Office.HostType.Word) {
-                console.log('Word host detected');
+                console.log('Word זוהה בהצלחה');
             }
         });
 
-        // Global variables
-        let currentSources = [];
-        const SEFARIA_API_URL = 'https://www.sefaria.org/api/find-refs/';
+        // משתנים גלובליים
+        const SEFARIA_API = 'https://www.sefaria.org/api/find-refs/';
+        let isProcessing = false;
 
-        // Find sources in selected text
-        async function findSourcesInSelection() {
-            showLoading('מחפש מקורות בטקסט נבחר...');
+        // חיפוש מקורות בטקסט נבחר
+        async function findSources() {
+            if (isProcessing) return;
             
             try {
+                isProcessing = true;
+                updateButtons(true);
+                showLoading('מחפש מקורות בטקסט נבחר...');
+                
                 await Word.run(async (context) => {
+                    // קבל את הטקסט הנבחר
                     const selection = context.document.getSelection();
                     selection.load('text');
                     
                     await context.sync();
                     
-                    if (!selection.text.trim()) {
-                        showError('אנא בחרו טקסט לחיפוש מקורות');
+                    const text = selection.text.trim();
+                    
+                    if (!text) {
+                        showError('אנא בחר טקסט לחיפוש מקורות');
                         return;
                     }
                     
-                    const sources = await callSefariaAPI(selection.text);
-                    await processSources(context, sources, selection.text, 'selection');
+                    if (text.length < 10) {
+                        showError('אנא בחר טקסט ארוך יותר (לפחות 10 תווים)');
+                        return;
+                    }
+                    
+                    // חפש מקורות
+                    const sources = await searchSefaria(text);
+                    
+                    if (sources.length > 0) {
+                        // הדגש את הטקסט
+                        selection.font.highlightColor = '#FFFF00';
+                        selection.font.bold = true;
+                        
+                        // צור הערת שוליים עם כל המקורות
+                        const footnoteText = sources.map(s => s.heRef).join(', ');
+                        selection.insertFootnote(footnoteText);
+                        
+                        await context.sync();
+                        
+                        showResults(sources, text);
+                        showSuccess(`✅ נמצאו ${sources.length} מקורות והתווספו למסמך!`);
+                        
+                    } else {
+                        showInfo('לא נמצאו מקורות מזוהים בטקסט זה');
+                    }
                 });
+                
             } catch (error) {
-                console.error('Error finding sources in selection:', error);
-                showError('שגיאה בחיפוש מקורות: ' + error.message);
+                console.error('שגיאה:', error);
+                showError(`שגיאה בחיפוש מקורות: ${error.message}`);
+            } finally {
+                isProcessing = false;
+                updateButtons(false);
             }
         }
 
-        // Find sources in entire document
-        async function findSourcesInDocument() {
-            showLoading('מחפש מקורות בכל המסמך...');
+        // חיפוש בכל המסמך
+        async function findInDocument() {
+            if (isProcessing) return;
             
             try {
+                isProcessing = true;
+                updateButtons(true);
+                showLoading('סורק את כל המסמך לחיפוש מקורות...');
+                
                 await Word.run(async (context) => {
                     const body = context.document.body;
                     body.load('text');
                     
                     await context.sync();
                     
-                    if (!body.text.trim()) {
+                    const text = body.text.trim();
+                    
+                    if (!text) {
                         showError('המסמך ריק');
                         return;
                     }
                     
-                    const sources = await callSefariaAPI(body.text);
-                    await processSources(context, sources, body.text, 'document');
+                    const sources = await searchSefaria(text);
+                    
+                    if (sources.length > 0) {
+                        await highlightSourcesInDocument(context, sources, text);
+                        showResults(sources, `מסמך שלם (${text.length} תווים)`);
+                        showSuccess(`✅ נמצאו ${sources.length} מקורות בכל המסמך!`);
+                    } else {
+                        showInfo('לא נמצאו מקורות בכל המסמך');
+                    }
                 });
+                
             } catch (error) {
-                console.error('Error finding sources in document:', error);
-                showError('שגיאה בחיפוש מקורות: ' + error.message);
+                console.error('שגיאה:', error);
+                showError(`שגיאה בסריקת המסמך: ${error.message}`);
+            } finally {
+                isProcessing = false;
+                updateButtons(false);
             }
         }
 
-        // Call Sefaria API
-        async function callSefariaAPI(text) {
+        // הדגשת מקורות בכל המסמך
+        async function highlightSourcesInDocument(context, sources, fullText) {
+            for (const source of sources) {
+                try {
+                    // חפש את הטקסט של המקור במסמך
+                    const searchResults = context.document.body.search(source.originalText);
+                    context.load(searchResults, 'items');
+                    await context.sync();
+                    
+                    if (searchResults.items.length > 0) {
+                        const range = searchResults.items[0];
+                        
+                        // הדגש
+                        range.font.highlightColor = '#FFFF00';
+                        range.font.bold = true;
+                        
+                        // הוסף הערת שוליים
+                        range.insertFootnote(source.heRef);
+                    }
+                } catch (error) {
+                    console.log('שגיאה בהדגשת מקור בודד:', error);
+                }
+            }
+            
+            await context.sync();
+        }
+
+        // ניקוי הדגשות
+        async function clearHighlights() {
+            if (isProcessing) return;
+            
             try {
-                const response = await fetch(SEFARIA_API_URL, {
+                isProcessing = true;
+                updateButtons(true);
+                showLoading('מנקה הדגשות...');
+                
+                await Word.run(async (context) => {
+                    const body = context.document.body;
+                    
+                    // נקה הדגשות מכל הטקסט
+                    body.font.highlightColor = null;
+                    body.font.bold = false;
+                    
+                    await context.sync();
+                    
+                    showSuccess('✅ כל ההדגשות נוקו מהמסמך');
+                });
+                
+            } catch (error) {
+                console.error('שגיאה בניקוי:', error);
+                showError(`שגיאה בניקוי הדגשות: ${error.message}`);
+            } finally {
+                isProcessing = false;
+                updateButtons(false);
+            }
+        }
+
+        // חיפוש בספריא
+        async function searchSefaria(text) {
+            try {
+                const response = await fetch(SEFARIA_API, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        text: {
-                            body: text,
-                            title: ""
-                        },
+                        text: { body: text, title: "" },
                         lang: "he"
                     })
                 });
                 
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    throw new Error(`שרת ספריא החזיר שגיאה: ${response.status}`);
                 }
                 
-                return await response.json();
-            } catch (error) {
-                console.error('API Error:', error);
-                throw new Error('לא ניתן להתחבר לשרת ספריא. בדקו את החיבור לאינטרנט.');
-            }
-        }
-
-        // Process sources and update document
-        async function processSources(context, apiResponse, originalText, scope) {
-            const bodyResults = apiResponse.body?.results || [];
-            const titleResults = apiResponse.title?.results || [];
-            const allResults = [...bodyResults, ...titleResults];
-            
-            currentSources = allResults;
-            
-            if (allResults.length === 0) {
-                showSuccess('לא נמצאו מקורות בטקסט זה');
-                return;
-            }
-            
-            // Apply user preferences
-            const addFootnotes = document.getElementById('addFootnotes').checked;
-            const highlightSources = document.getElementById('highlightSources').checked;
-            const insertBrackets = document.getElementById('insertBrackets').checked;
-            
-            try {
-                if (scope === 'selection') {
-                    const selection = context.document.getSelection();
-                    await applySourcesToRange(context, selection, allResults, apiResponse, {
-                        addFootnotes, highlightSources, insertBrackets
-                    });
-                } else {
-                    const body = context.document.body;
-                    await applySourcesToRange(context, body, allResults, apiResponse, {
-                        addFootnotes, highlightSources, insertBrackets
-                    });
-                }
+                const data = await response.json();
+                const results = data.body?.results || [];
                 
-                await context.sync();
-                showResults(allResults, apiResponse);
-                showSuccess(`נמצאו ${allResults.length} מקורות ועודכן המסמך`);
+                // עבד את התוצאות
+                const sources = [];
+                const refData = data.body?.refData || {};
                 
-            } catch (error) {
-                console.error('Error applying sources:', error);
-                showError('שגיאה בעדכון המסמך: ' + error.message);
-            }
-        }
-
-        // Apply sources to a range
-        async function applySourcesToRange(context, range, results, apiResponse, options) {
-            // Sort results by position (descending to avoid offset issues)
-            const sortedResults = results.sort((a, b) => b.startChar - a.startChar);
-            
-            for (const result of sortedResults) {
-                try {
-                    // Find the text range for this result
-                    const searchResults = range.search(result.text);
-                    context.load(searchResults, 'items');
-                    await context.sync();
-                    
-                    if (searchResults.items.length > 0) {
-                        const foundRange = searchResults.items[0];
-                        
-                        // Highlight source
-                        if (options.highlightSources) {
-                            foundRange.font.highlightColor = '#FFFF00';
-                            foundRange.font.bold = true;
-                        }
-                        
-                        // Add footnote
-                        if (options.addFootnotes) {
-                            const footnoteText = result.refs.map(ref => {
-                                const refData = apiResponse.body?.refData?.[ref] || apiResponse.title?.refData?.[ref];
-                                return refData ? refData.heRef : ref;
-                            }).join(', ');
-                            
-                            foundRange.insertFootnote(footnoteText);
-                        }
-                        
-                        // Insert brackets with source
-                        if (options.insertBrackets) {
-                            const heRefs = result.refs.map(ref => {
-                                const refData = apiResponse.body?.refData?.[ref] || apiResponse.title?.refData?.[ref];
-                                return refData ? refData.heRef : ref;
-                            }).join(', ');
-                            
-                            foundRange.insertText(` [${heRefs}]`, Word.InsertLocation.after);
-                        }
-                    }
-                } catch (error) {
-                    console.error('Error processing individual result:', error);
-                }
-            }
-        }
-
-        // Clear highlights
-        async function clearHighlights() {
-            try {
-                await Word.run(async (context) => {
-                    const body = context.document.body;
-                    const searchResults = body.search('', {matchWildcards: false});
-                    context.load(searchResults, 'items');
-                    
-                    await context.sync();
-                    
-                    // Clear all highlighting
-                    for (let i = 0; i < searchResults.items.length; i++) {
-                        searchResults.items[i].font.highlightColor = null;
-                        searchResults.items[i].font.bold = false;
-                    }
-                    
-                    await context.sync();
-                    showSuccess('הדגשות נוקו');
-                });
-            } catch (error) {
-                console.error('Error clearing highlights:', error);
-                showError('שגיאה בניקוי הדגשות: ' + error.message);
-            }
-        }
-
-        // Show results
-        function showResults(results, apiResponse) {
-            const resultsDiv = document.getElementById('results');
-            const statsDiv = document.getElementById('stats');
-            const sourcesListDiv = document.getElementById('sourcesList');
-            
-            // Show stats
-            const uniqueBooks = new Set(results.map(r => r.refs[0]?.split(' ')[0])).size;
-            statsDiv.innerHTML = `
-                <div class="stats">
-                    📊 נמצאו ${results.length} מקורות מ-${uniqueBooks} ספרים שונים
-                </div>
-            `;
-            
-            // Group sources by reference
-            const groupedSources = {};
-            results.forEach(result => {
-                result.refs.forEach(ref => {
-                    if (!groupedSources[ref]) {
-                        const refData = apiResponse.body?.refData?.[ref] || apiResponse.title?.refData?.[ref];
-                        groupedSources[ref] = {
+                results.forEach(result => {
+                    result.refs.forEach(ref => {
+                        const sourceData = refData[ref];
+                        sources.push({
                             ref: ref,
-                            heRef: refData?.heRef || ref,
-                            url: refData?.url || '',
-                            category: refData?.primaryCategory || '',
-                            matches: []
-                        };
-                    }
-                    groupedSources[ref].matches.push(result.text);
+                            heRef: sourceData?.heRef || ref,
+                            originalText: result.text,
+                            category: sourceData?.primaryCategory || '',
+                            url: sourceData?.url || ''
+                        });
+                    });
                 });
-            });
-            
-            // Display sources
-            let htmlContent = '';
-            Object.values(groupedSources).forEach(source => {
-                htmlContent += `
-                    <div class="source-item">
-                        <div class="source-ref">
-                            📖 ${source.heRef}
-                            ${source.category ? `<span style="color: #666; font-size: 0.9em;"> (${source.category})</span>` : ''}
-                        </div>
-                        <div class="source-text">
-                            טקסט: "${source.matches.join('", "')}"
-                        </div>
-                    </div>
-                `;
-            });
-            
-            sourcesListDiv.innerHTML = htmlContent;
-            resultsDiv.style.display = 'block';
+                
+                return sources;
+                
+            } catch (error) {
+                console.error('שגיאה בקריאה לספריא:', error);
+                throw new Error('לא ניתן להתחבר לשרת ספריא. אנא בדקו את החיבור לאינטרנט.');
+            }
         }
 
-        // UI Helper functions
-        function showLoading(message) {
+        // עדכון מצב כפתורים
+        function updateButtons(disabled) {
+            document.getElementById('findBtn').disabled = disabled;
+            document.getElementById('clearBtn').disabled = disabled;
+            document.getElementById('docBtn').disabled = disabled;
+        }
+
+        // הצגת תוצאות
+        function showResults(sources, searchText) {
             const resultsDiv = document.getElementById('results');
             const sourcesListDiv = document.getElementById('sourcesList');
             
-            sourcesListDiv.innerHTML = `
+            let html = `
+                <div class="stats">
+                    📊 נמצאו ${sources.length} מקורות
+                </div>
+            `;
+            
+            // קבץ מקורות לפי ספר
+            const groupedSources = {};
+            sources.forEach(source => {
+                const book = source.heRef.split(' ')[0];
+                if (!groupedSources[book]) {
+                    groupedSources[book] = [];
+                }
+                groupedSources[book].push(source);
+            });
+            
+            // הצג מקורות מקובצים
+            Object.keys(groupedSources).forEach(book => {
+                html += `<div class="source-item">`;
+                html += `<div class="source-ref">📖 ${book}</div>`;
+                
+                groupedSources[book].forEach(source => {
+                    html += `<div style="margin: 5px 0; padding: 5px; background: rgba(40,167,69,0.1); border-radius: 3px;">`;
+                    html += `<strong>${source.heRef}</strong>`;
+                    if (source.category) {
+                        html += ` <span style="color: #666; font-size: 0.8em;">(${source.category})</span>`;
+                    }
+                    html += `<div class="source-text">"${source.originalText}"</div>`;
+                    html += `</div>`;
+                });
+                
+                html += `</div>`;
+            });
+            
+            sourcesListDiv.innerHTML = html;
+            resultsDiv.classList.add('show');
+        }
+
+        // הצגת מסרים
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.innerHTML = `<div class="alert alert-${type}">${text}</div>`;
+            document.getElementById('results').classList.add('show');
+        }
+
+        function showLoading(text) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.innerHTML = `
                 <div class="loading">
-                    ${message}
                     <div class="spinner"></div>
+                    ${text}
                 </div>
             `;
-            resultsDiv.style.display = 'block';
+            document.getElementById('sourcesList').innerHTML = '';
+            document.getElementById('results').classList.add('show');
         }
 
-        function showError(message) {
-            const resultsDiv = document.getElementById('results');
-            const sourcesListDiv = document.getElementById('sourcesList');
-            
-            sourcesListDiv.innerHTML = `
-                <div class="error">
-                    <strong>שגיאה:</strong> ${message}
-                </div>
-            `;
-            resultsDiv.style.display = 'block';
+        function showSuccess(text) {
+            showMessage(text, 'success');
         }
 
-        function showSuccess(message) {
-            const resultsDiv = document.getElementById('results');
-            const sourcesListDiv = document.getElementById('sourcesList');
-            
-            // Add success message at the top
-            const existingContent = sourcesListDiv.innerHTML;
-            sourcesListDiv.innerHTML = `
-                <div class="success">
-                    ✅ ${message}
-                </div>
-                ${existingContent}
-            `;
-            resultsDiv.style.display = 'block';
+        function showError(text) {
+            showMessage(text, 'error');
+        }
+
+        function showInfo(text) {
+            showMessage(text, 'info');
         }
     </script>
 </body>
